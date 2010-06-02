@@ -49,9 +49,7 @@ class Controller
     while tuple = @ts.take([:read, @username, nil])
       tweet = tuple[2]
       receiver.read(tweet)
-      if receiver.to_reply?
-        @ts.write([:reply, @username, tweet])
-      end
+      @ts.write([:reply, @username, tweet])
     end
   end
 
@@ -60,8 +58,10 @@ class Controller
     updater = Status::Updater.new
     while tuple = @ts.take([:reply, @username, nil])
       tweet = tuple[2]
-      text = "@#{tweet["user"]["screen_name"]} #{updater.reply(tweet)}"
-      @ts.write([:update, @username, text, tweet["id"]])
+      if text = updater.reply(tweet)
+        status = "@#{tweet["user"]["screen_name"]} #{text}"
+        @ts.write([:update, @username, status, tweet["id"]])
+      end
     end
   end
 
@@ -72,23 +72,22 @@ class Controller
     #   next if @ts.read_all([:tweet, @username]).size > 0
     #   @ts.write([:tweet, @username])
     # end
-    # スーパーコメントタイム
   end
 
   def tweet
     require "status"
     updater = Status::Updater.new
     while @ts.take([:tweet, @username])
-      text = updater.tweet
-      @ts.write([:update, @username, text, nil])
+      status = updater.tweet
+      @ts.write([:update, @username, status, nil])
     end
   end
 
   def update
     while tuple = @ts.take([:update, @username, nil, nil])
-      text = tuple[2]
+      status = tuple[2]
       in_reply_to_status_id = tuple[3]
-      param = {:status => text}
+      param = {:status => status}
       if in_reply_to_status_id
         param[:in_reply_to_status_id] = in_reply_to_status_id
       end

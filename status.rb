@@ -4,21 +4,10 @@ require "zabuton_count"
 # class Status < ActiveRecord::Base
 class Status
   class Receiver
-    def initialize
-      @to_reply_flag = false
+    def initialize(username)
     end
 
     def read(tweet)
-      @to_reply_flag =
-        if tweet["text"][/@(\w+)\s*(\+\++|--+)/]
-          true
-        else
-          false
-        end
-    end
-
-    def to_reply?
-      @to_reply_flag
     end
   end
 
