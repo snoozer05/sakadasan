@@ -46,8 +46,8 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/push.rb"
-  w.start = "cd #{app_root}; ./push.rb"
+  w.name = "sakadasan/push_tweet.rb"
+  w.start = "cd #{app_root}; ./push_tweet.rb"
   w.start_if do |start|
     start.condition(:process_running) do |c|
       c.interval = 3.seconds
@@ -81,6 +81,28 @@ end
 God.watch do |w|
   w.name = "sakadasan/update.rb"
   w.start = "cd #{app_root}; ./update.rb"
+  w.start_if do |start|
+    start.condition(:process_running) do |c|
+      c.interval = 3.seconds
+      c.running = false
+    end
+  end
+end
+
+God.watch do |w|
+  w.name = "sakadasan/push_adjust.rb"
+  w.start = "cd #{app_root}; ./push_adjust.rb"
+  w.start_if do |start|
+    start.condition(:process_running) do |c|
+      c.interval = 3.seconds
+      c.running = false
+    end
+  end
+end
+
+God.watch do |w|
+  w.name = "sakadasan/adjust.rb"
+  w.start = "cd #{app_root}; ./adjust.rb"
   w.start_if do |start|
     start.condition(:process_running) do |c|
       c.interval = 3.seconds
