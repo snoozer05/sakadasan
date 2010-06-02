@@ -3,4 +3,4 @@
 require "controller"
 
 controller = Controller.new("sakadasan")
-controller.push
+controller.adjust
