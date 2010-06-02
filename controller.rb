@@ -69,7 +69,7 @@ class Controller
     sleep
     # loop do
     #   sleep 900
-    #   next if @ts.read_all([:tweet]).size > 0
+    #   next if @ts.read_all([:tweet, @username]).size > 0
     #   @ts.write([:tweet, @username])
     # end
   end
