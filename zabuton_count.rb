@@ -56,17 +56,13 @@ class ZabutonCount
         return nil
       else
         model.count += count 
-        model.count = 0 if model.count < 0
       end
     else
-      if  count < 0
-        return nil
-      else
-        model = CountTable.new
-        model.user_id = userid
-        model.count = count 
-      end
+      model = CountTable.new
+      model.user_id = userid
+      model.count = 1 + count 
     end
+    model.count = 0 if model.count < 0
     model.save!
     return model
   end

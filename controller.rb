@@ -72,6 +72,7 @@ class Controller
     #   next if @ts.read_all([:tweet, @username]).size > 0
     #   @ts.write([:tweet, @username])
     # end
+    # スーパーコメントタイム
   end
 
   def tweet
