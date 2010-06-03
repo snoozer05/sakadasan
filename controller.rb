@@ -37,7 +37,7 @@ class Controller
       rescue Exception
         next
       end
-      tweets.each do |tweet|
+      tweets.reverse_each do |tweet|
         @ts.write([:read, @username, tweet])
       end
     end
@@ -49,6 +49,7 @@ class Controller
     while tuple = @ts.take([:read, @username, nil])
       tweet = tuple[2]
       receiver.read(tweet)
+      next if receiver.read?
       @ts.write([:reply, @username, tweet])
     end
   end
