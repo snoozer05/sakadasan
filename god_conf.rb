@@ -2,7 +2,7 @@ God.pid_file_directory = "#{ENV["HOME"]}/.sakadasan_pids"
 app_root = "#{ENV["HOME"]}/sakadasan"
 
 God.watch do |w|
-  w.name = "sakadasan/tuple_space.rb"
+  w.name = "tuple_space.rb"
   w.start = "cd #{app_root}; ./tuple_space.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -14,7 +14,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/pull.rb"
+  w.name = "pull.rb"
   w.start = "cd #{app_root}; ./pull.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -26,7 +26,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/invent.rb"
+  w.name = "invent.rb"
   w.start = "cd #{app_root}; ./invent.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -38,7 +38,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/read.rb"
+  w.name = "read.rb"
   w.start = "cd #{app_root}; ./read.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -50,7 +50,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/push_tweet.rb"
+  w.name = "push_tweet.rb"
   w.start = "cd #{app_root}; ./push_tweet.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -62,7 +62,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/tweet.rb"
+  w.name = "tweet.rb"
   w.start = "cd #{app_root}; ./tweet.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -74,7 +74,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/reply.rb"
+  w.name = "reply.rb"
   w.start = "cd #{app_root}; ./reply.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -86,7 +86,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/update.rb"
+  w.name = "update.rb"
   w.start = "cd #{app_root}; ./update.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -98,7 +98,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/push_adjust.rb"
+  w.name = "push_adjust.rb"
   w.start = "cd #{app_root}; ./push_adjust.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
@@ -110,7 +110,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  w.name = "sakadasan/adjust.rb"
+  w.name = "adjust.rb"
   w.start = "cd #{app_root}; ./adjust.rb"
   w.behavior(:clean_pid_file)
   w.start_if do |start|
