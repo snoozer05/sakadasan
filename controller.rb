@@ -67,12 +67,12 @@ class Controller
   end
 
   def push_tweet
-    sleep
-    # loop do
-    #   sleep 900
-    #   next if @ts.read_all([:tweet, @username]).size > 0
-    #   @ts.write([:tweet, @username])
-    # end
+    loop do
+      sleep 60
+      # sleep 900
+      # next if @ts.read_all([:tweet, @username]).size > 0
+      # @ts.write([:tweet, @username])
+    end
   end
 
   def tweet
