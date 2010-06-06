@@ -11,9 +11,9 @@ class ZabutonCount
     result = check(status,from_id)
     if !result.nil?
       if result[:res] == true
-        return "@#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i<0 ? '減らした':'増やした'}ので、#{result[:user_id]}さんの座布団は#{result[:result_count]}枚になりました！"
+        return "#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i<0 ? '減らした':'増やした'}ので、#{result[:user_id]}さんの座布団は#{result[:result_count]}枚になりました！"
       else
-        return "@#{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
+        return "#{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
       end
     end
     return nil
