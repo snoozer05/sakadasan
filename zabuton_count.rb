@@ -31,8 +31,8 @@ class ZabutonCount
      if param[0].size == 2
        userid = param[0][0]
        countstr = param[0][1]
-       if userid != from_id
-         count = get_count(countstr)
+       count = get_count(countstr)
+       if userid != from_id || (userid == from_id && count<0)
          model = save_zabuton( userid, count )
          if !model.nil?
            return { :user_id => model.user_id,:this_count=>count, :result_count => model.count , :res => true}
