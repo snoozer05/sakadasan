@@ -48,10 +48,6 @@ class ZabutonCount
     (from_id != to_id) || (from_id == to_id && count < 0)
   end
 
-  #
-  # DBに値を格納します。
-  # 存在しないIDの場合は新規に登録します。
-  #
   def save_zabuton(userid, count)
     model = CountTable.find_by_user_id(userid) || CountTable.new(:user_id => userid, :count => 1)
     model.count += count
@@ -59,9 +55,6 @@ class ZabutonCount
     return model
   end
 
-  #
-  # 座布団を数えます。
-  #
   def get_zabuton_count(countstr)
     count = 0
     if countstr[/\+/]
