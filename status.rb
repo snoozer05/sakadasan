@@ -1,5 +1,5 @@
 require "connection"
-require "zabuton_count"
+require "sakada"
 
 class Status < ActiveRecord::Base
   class Receiver
