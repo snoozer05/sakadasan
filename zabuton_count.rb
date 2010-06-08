@@ -103,7 +103,7 @@ class ZabutonCount
   # マイナス値の場合は、-1～-4の間で補正します。
   #
   def fixed_count(count)
-    fixed = rand(4)
+    fixed = rand(3)+1
     if count < 0
      return -fixed
     else
