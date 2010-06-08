@@ -49,20 +49,9 @@ class ZabutonCount
   # DBに値を格納します。
   # 存在しないIDの場合は新規に登録します。
   #
-  def save_zabuton(userid,count)
-    model = CountTable.find_by_user_id(userid)
-    if !model.nil?
-      if model.count == 0 && count < 0
-        return nil
-      else
-        model.count += count 
-      end
-    else
-      model = CountTable.new
-      model.user_id = userid
-      model.count = 1 + count 
-    end
-    model.count = 0 if model.count < 0
+  def save_zabuton(userid, count)
+    model = CountTable.find_by_user_id(userid) || CountTable.new(:user_id => userid, :count => 1)
+    model.count += count
     model.save!
     return model
   end
