@@ -7,7 +7,7 @@ class ZabutonCount
   # return:返信status
   #
   def get_zabuton(status, from_id)
-    result = check(status,from_id)
+    result = check(status, from_id)
     if !result.nil?
       if result[:res] == true
         return "#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i<0 ? '減らした':'増やした'}ので、#{result[:user_id]}さんの座布団は#{result[:result_count]}枚になりました！"
@@ -24,7 +24,7 @@ class ZabutonCount
   # param:twitterの本文(status)、発言者ID(from_id)
   # return {[座布団対象id],[座布団の数]}
   #
-  def check(status,from_id)
+  def check(status, from_id)
    param = status.scan(/@(\w+)\s*(\+\++|--+)/)
    if param.size != 0
      if param[0].size == 2
@@ -32,9 +32,9 @@ class ZabutonCount
        countstr = param[0][1]
        count = get_count(countstr)
        if userid != from_id || (userid == from_id && count<0)
-         model = save_zabuton( userid, count )
+         model = save_zabuton(userid, count)
          if !model.nil?
-           return { :user_id => model.user_id,:this_count=>count, :result_count => model.count , :res => true}
+           return { :user_id => model.user_id,:this_count=>count, :result_count => model.count , :res => true }
          else
            return { :user_id => userid ,:this_count=>count, :result_count => 0, :res => false }
          end
