@@ -1,7 +1,6 @@
 require "count_table.rb"
 
 class ZabutonCount
-  
   #
   # 座布団処理をします。
   # param:twitterの本文（status）、発言者ID(from_id)
@@ -40,11 +39,11 @@ class ZabutonCount
            return { :user_id => userid ,:this_count=>count, :result_count => 0, :res => false }
          end
        end
-     end  
+     end
    end
    return nil
   end
-  
+
   #
   # DBに値を格納します。
   # 存在しないIDの場合は新規に登録します。
@@ -67,5 +66,5 @@ class ZabutonCount
       count -= countstr.size - 1
     end
     return count
-  end 
+  end
 end
