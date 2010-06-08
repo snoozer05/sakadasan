@@ -1,34 +1,30 @@
 require "count_table.rb"
 
-class ZabutonCount
+class Sakada
   #
   # 座布団処理をします。
   # param:twitterの本文（status）、発言者ID(from_id)
   # return:返信status
   #
-  def get_zabuton(status, from_id)
-    result = check(status, from_id)
-    return nil if result.nil?
+  def carry_zabuton_by_tweet(status, from_id)
+    request = get_request(status)
+    return nil unless valid_request?(request)
 
-    if result[:res]
-      return "#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i < 0 ? '減らした' : '増やした'}ので、#{result[:user_id]}さんの座布団は#{result[:result_count]}枚になりました！"
-    else
-      return "#{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
-    end
+    result = process_request(request, from_id)
+    return build_reply_status(result, from_id)
   end
 
   private
-  #
-  # 座布団をあげたかどうかチェックします。
-  # 座布団をあげている場合は、座布団計算をします。
-  # param:twitterの本文(status)、発言者ID(from_id)
-  # return {[座布団対象id],[座布団の数]}
-  #
-  def check(status, from_id)
-   param = status.scan(/@(\w+)\s*(\+\++|--+)/)
-   return nil unless param.size != 0 && param[0].size == 2
+  def get_request(status)
+    status.scan(/@(\w+)\s*(\+\++|--+)/)
+  end
 
-   userid, count = param[0][0], get_zabuton_count(param[0][1])
+  def valid_request?(request)
+    request.size != 0 && request[0].size == 2
+  end
+
+  def process_request(request, from_id)
+   userid, count = request[0][0], get_zabuton_count(reqest[0][1])
    if can_save_zabuton?(from_id, userid, count)
      if !have_zabuton?(userid) && count < 0
        return { :user_id => userid, :this_count => count, :result_count => 0, :res => false }
@@ -37,6 +33,15 @@ class ZabutonCount
        return { :user_id => model.user_id, :this_count => count, :result_count => model.count , :res => true }
      end
    end
+  end
+
+  def build_reply_status(result, from_id)
+    if result[:res]
+      return "#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i < 0 ? '減らした' : '増やした'}ので、#{result[:user_
+        id]}さんの座布団は#{result[:result_count]}枚になりました！"
+    else
+      return "#{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
+    end
   end
 
   def have_zabuton?(userid)
