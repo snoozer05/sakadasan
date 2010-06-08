@@ -27,22 +27,26 @@ class ZabutonCount
   #
   def check(status, from_id)
    param = status.scan(/@(\w+)\s*(\+\++|--+)/)
-   if param.size != 0
-     if param[0].size == 2
-       userid = param[0][0]
-       countstr = param[0][1]
-       count = get_count(countstr)
-       if userid != from_id || (userid == from_id && count<0)
-         model = save_zabuton(userid, count)
-         if !model.nil?
-           return { :user_id => model.user_id,:this_count=>count, :result_count => model.count , :res => true }
-         else
-           return { :user_id => userid ,:this_count=>count, :result_count => 0, :res => false }
-         end
-       end
+   return nil unless param.size != 0 && param[0].size == 2
+
+   userid, count = param[0][0], get_zabuton_count(param[0][1])
+   if can_save_zabuton?(from_id, userid, count)
+     if !have_zabuton?(userid) && count < 0
+       return { :user_id => userid, :this_count => count, :result_count => 0, :res => false }
+     else
+       model = save_zabuton(userid, count)
+       return { :user_id => model.user_id, :this_count => count, :result_count => model.count , :res => true }
      end
    end
-   return nil
+  end
+
+  def have_zabuton?(userid)
+    model = CountTable.find_by_user_id(userid)
+    return (model.nil? || model.count == 0) ? false : true
+  end
+
+  def can_save_zabuton?(from_id, to_id, count)
+    (from_id != to_id) || (from_id == to_id && count < 0)
   end
 
   #
@@ -59,7 +63,7 @@ class ZabutonCount
   #
   # 座布団を数えます。
   #
-  def get_count(countstr)
+  def get_zabuton_count(countstr)
     count = 0
     if countstr[/\+/]
       count += countstr.size - 1
