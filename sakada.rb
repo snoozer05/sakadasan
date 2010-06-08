@@ -1,6 +1,11 @@
 require "count_table.rb"
 
 class Sakada
+  RESULT_NORMAL = "1"
+  RESULT_TOO_MANY = "2"
+  RESULT_TOO_LITTLE = "3"
+  RESULT_ZERO = "9"
+
   #
   # 座布団処理をします。
   # param:twitterの本文（status）、発言者ID(from_id)
@@ -24,23 +29,38 @@ class Sakada
   end
 
   def process_request(request, from_id)
-   userid, count = request[0][0], get_zabuton_count(reqest[0][1])
+   userid, count = request[0][0], get_zabuton_count(request[0][1])
    if can_save_zabuton?(from_id, userid, count)
      if !have_zabuton?(userid) && count < 0
-       return { :user_id => userid, :this_count => count, :result_count => 0, :res => false }
+       return { :user_id => userid, :this_count => count, :result_count => 0, :res => RESULT_ZERO }
      else
-       model = save_zabuton(userid, count)
-       return { :user_id => model.user_id, :this_count => count, :result_count => model.count , :res => true }
+       fixed_count = fixed_count(count)  #枚数補正
+       model = save_zabuton(userid, fixed_count) 
+       return create_return_hash(model, count, fixed_count) 
      end
    end
   end
 
   def build_reply_status(result, from_id)
-    if result[:res]
-      return "#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i < 0 ? '減らした' : '増やした'}ので、#{result[:user_
-        id]}さんの座布団は#{result[:result_count]}枚になりました！"
-    else
+    case result[:res]
+    when RESULT_NORMAL
+      return "#{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i<0 ? '減らした':'増やした'}ので、#{result[:user_id]}さんの座布団は#{result[:result_count]}枚になりました！"
+    when RESULT_TOO_MANY
+      return "#{from_id}さんが#{result[:this_count].to_i.abs}枚増やそうとしましたが、さかださんが座布団を落としたので、#{result[:user_id]}さんの座布団は#{result[:fixed_count].to_i.abs}枚だけ増えて#{result[:result_count]}枚になりました！"
+    when RESULT_TOO_LITTLE
+      return "#{from_id}さんが#{result[:this_count].to_i.abs}枚減らそうとしましたが、さかださんが運びきれず、#{result[:user_id]}さんの座布団は#{result[:fixed_count].to_i.abs}枚だけ減って#{result[:result_count]}枚になりました！"
+    when RESULT_ZERO
       return "#{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
+    end
+  end
+  
+  def create_return_hash(model, count, fixed_count)
+    if count == fixed_count
+      return { :user_id => model.user_id, :this_count => count, :result_count => model.count, :res => RESULT_NORMAL }
+    elsif count != fixed_count && count>0
+      return { :user_id => model.user_id, :this_count => count, :fixed_count => fixed_count, :result_count => model.count, :res => RESULT_TOO_MANY }
+    elsif count != fixed_count && count<0
+      return { :user_id => model.user_id, :this_count => count, :fixed_count => fixed_count, :result_count => model.count, :res => RESULT_TOO_LITTLE }
     end
   end
 
@@ -69,4 +89,17 @@ class Sakada
     end
     return count
   end
+
+  def fixed_count(count)
+    if count.abs>4
+      fixed = rand(4)+1
+      if count < 0
+        return -fixed
+      else
+        return fixed
+      end
+   end
+   return count
+  end
+
 end
