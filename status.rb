@@ -35,8 +35,8 @@ class Status < ActiveRecord::Base
     end
 
     def reply(tweet)
-      zabuton_count = ZabutonCount.new
-      return zabuton_count.get_zabuton(tweet["text"], tweet["user"]["screen_name"])
+      sakada_san = Sakada.new
+      return sakada_san.carry_zabuton_by_tweet(tweet["text"], tweet["user"]["screen_name"])
     end
   end
 end

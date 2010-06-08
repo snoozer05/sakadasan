@@ -1,7 +1,7 @@
 require "count_table.rb"
 
 class ZabutonCount
-  RESULT_NOMAL = "1"
+  RESULT_NORMAL = "1"
   RESULT_TOO_MANY = "2"
   RESULT_TOO_LITTLE = "3"
   RESULT_ZERO = "9"
