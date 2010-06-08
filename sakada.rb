@@ -35,8 +35,8 @@ class Sakada
        return { :user_id => userid, :this_count => count, :result_count => 0, :res => RESULT_ZERO }
      else
        fixed_count = fixed_count(count)  #枚数補正
-       model = save_zabuton(userid, fixed_count) 
-       return create_return_hash(model, count, fixed_count) 
+       model = save_zabuton(userid, fixed_count)
+       return create_return_hash(model, count, fixed_count)
      end
    end
   end
@@ -53,7 +53,7 @@ class Sakada
       return "#{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
     end
   end
-  
+
   def create_return_hash(model, count, fixed_count)
     if count == fixed_count
       return { :user_id => model.user_id, :this_count => count, :result_count => model.count, :res => RESULT_NORMAL }
