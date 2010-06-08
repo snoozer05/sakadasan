@@ -18,6 +18,7 @@ class ZabutonCount
     return nil
   end
 
+  private
   #
   # 座布団をあげたかどうかチェックします。
   # 座布団をあげている場合は、座布団計算をします。
