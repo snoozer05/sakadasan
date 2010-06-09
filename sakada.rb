@@ -64,16 +64,6 @@ class Sakada
     end
   end
 
-  def create_return_hash(model, count, fixed_count)
-    if count == fixed_count
-      return { :user_id => model.user_id, :this_count => count, :result_count => model.count, :res => RESULT_NORMAL }
-    elsif count != fixed_count && count>0
-      return { :user_id => model.user_id, :this_count => count, :fixed_count => fixed_count, :result_count => model.count, :res => RESULT_TOO_MANY }
-    elsif count != fixed_count && count<0
-      return { :user_id => model.user_id, :this_count => count, :fixed_count => fixed_count, :result_count => model.count, :res => RESULT_TOO_LITTLE }
-    end
-  end
-
   def have_zabuton?(userid)
     model = CountTable.find_by_user_id(userid)
     return (model.nil? || model.count == 0) ? false : true
