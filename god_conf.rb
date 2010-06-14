@@ -1,6 +1,5 @@
 God.pid_file_directory = "#{ENV["HOME"]}/.sakadasan_pids"
 app_root = "#{ENV["HOME"]}/sakadasan"
-system("cd #{app_root}")
 
 God.watch do |w|
   w.name = "tuple_space.rb"
