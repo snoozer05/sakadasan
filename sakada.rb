@@ -13,7 +13,7 @@ class Sakada
   #
   def carry_zabuton_by_tweet(status, from_id)
     request = get_request(status)
-    return nil unless valid_request?(request)
+    return [] unless valid_request?(request)
 
     result = process_request(request, from_id)
     return [build_reply_status(result, from_id)]
