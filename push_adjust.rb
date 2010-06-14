@@ -1,6 +1,14 @@
 #!/usr/bin/ruby
 
-require "controller"
+require "updater"
+require "drb"
 
-controller = Controller.new("sakadasan")
-controller.push_adjust
+username = Updater::Username
+ts = DRbObject.new_with_uri(Updater::DRbURI)
+
+loop do
+  if ts.read_all([:adjust, username]).size == 0
+    ts.write([:adjust, username])
+  end
+  sleep 180
+end

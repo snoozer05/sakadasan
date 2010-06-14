@@ -1,4 +1,4 @@
-require "connection"
+require "connection_establishment"
 
 class CountTable < ActiveRecord::Base
   def before_save

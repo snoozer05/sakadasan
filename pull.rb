@@ -1,6 +1,14 @@
 #!/usr/bin/ruby
 
-require "controller"
+require "updater"
+require "drb"
 
-controller = Controller.new("sakadasan")
-controller.pull
+username = Updater::Username
+ts = DRbObject.new_with_uri(Updater::DRbURI)
+
+loop do
+  if ts.read_all([:invent, username]).size == 0
+    ts.write([:invent, username])
+  end
+  sleep 60
+end
