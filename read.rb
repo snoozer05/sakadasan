@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-require "sakada"
+require "updater"
 require "drb"
 
 username = Updater::Username
