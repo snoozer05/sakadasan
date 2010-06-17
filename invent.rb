@@ -24,11 +24,15 @@ access_token = OAuth::AccessToken.new(
 while ts.take([:invent, username])
   begin
     response = access_token.get("http://api.twitter.com/1/statuses/friends_timeline.json?count=200")
-    tweets = JSON.load(response.body)
   rescue Exception
     next
   end
-  tweets.reverse_each do |tweet|
-    ts.write([:record, username, tweet])
+  if response.code == "200"
+    tweets = JSON.load(response.body)
+    tweets.reverse_each do |tweet|
+      ts.write([:record, username, tweet])
+    end
+  else
+    next
   end
 end
