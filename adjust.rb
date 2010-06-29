@@ -52,9 +52,9 @@ while ts.take([:adjust, username])
       param = {:user_id => id_to_unfollow}
       response = access_token.post("http://api.twitter.com/1/friendships/destroy.json", param)
       if response.code == "200"
-        logger.info("@#{username} has succeed to follow id:#{id_to_unfollow}")
+        logger.info("@#{username} has succeed to unfollow id:#{id_to_unfollow}")
       else
-        logger.warn("@#{username} has failed to follow id:#{id_to_unfollow}")
+        logger.warn("@#{username} has failed to unfollow id:#{id_to_unfollow}")
       end
     end
   rescue => e
