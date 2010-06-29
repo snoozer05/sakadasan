@@ -8,7 +8,7 @@ username = Updater::Username
 ts = DRbObject.new_with_uri(Updater::DRbURI)
 
 updater = Updater.new
-log = Logger.new("#{$HOME}/log/sakadasan.log")
+log = Logger.new("#{ENV["HOME"]}/log/sakadasan.log")
 log.level = Logger::INFO
 
 while tuple = ts.take([:read, username, nil])
