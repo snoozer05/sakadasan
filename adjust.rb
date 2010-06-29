@@ -41,11 +41,21 @@ while ts.take([:adjust, username])
     ids_to_unfollow = friends - (friends & followers)
     ids_to_follow.each do |id_to_follow|
       param = {:user_id => id_to_follow}
-      access_token.post("http://api.twitter.com/1/friendships/create/#{username}.json", param)
+      response = access_token.post("http://api.twitter.com/1/friendships/create/#{username}.json", param)
+      if response.code == "200"
+        logger.info("@#{username} has succeed to follow id:#{id_to_follow}")
+      else
+        logger.warn("@#{username} has failed to follow id:#{id_to_follow}")
+      end
     end
     ids_to_unfollow.each do |id_to_unfollow|
       param = {:user_id => id_to_unfollow}
-      access_token.post("http://api.twitter.com/1/friendships/destroy.json", param)
+      response = access_token.post("http://api.twitter.com/1/friendships/destroy.json", param)
+      if response.code == "200"
+        logger.info("@#{username} has succeed to follow id:#{id_to_follow}")
+      else
+        logger.warn("@#{username} has failed to follow id:#{id_to_follow}")
+      end
     end
   rescue => e
     logger.fatal("#{e.class}: #{e.message}")
