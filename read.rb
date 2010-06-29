@@ -19,7 +19,7 @@ while tuple = ts.take([:read, username, nil])
     log.debug("Sakadasan responded to some tweet")
     responses.each do |response|
       ts.write([:update, username, response, tweet["id"]])
-      log.info("Sakadasan said \"#{response}\" (in reply to @#{tweet["id"]})")
+      log.info("Sakadasan said \"#{response}\" (in reply to @#{tweet["user"]["screen_name"]})")
     end
   rescue => e
     log.fatal("#{e.class}: #{e.message}")
