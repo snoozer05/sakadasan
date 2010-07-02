@@ -26,5 +26,6 @@ while tuple = ts.take([:read, username, nil])
     e.backtrace.each do |info|
       log.fatal("-- #{info}")
     end
+    next
   end
 end

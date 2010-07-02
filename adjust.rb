@@ -62,5 +62,6 @@ while ts.take([:adjust, username])
     e.backtrace.each do |info|
       logger.fatal("-- #{info}")
     end
+    next
   end
 end
