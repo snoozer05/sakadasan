@@ -44,11 +44,11 @@ class Sakada
   def build_reply_status(result, from_id)
     case result[:res]
     when RESULT_NORMAL
-      return "@#{from_id} #{from_id}さんが#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i<0 ? '減らした':'増やした'}ので、#{result[:user_id]}さんの座布団は#{result[:result_count]}枚になりました！"
+      return "@#{from_id} #{result[:user_id]}さんの座布団は#{result[:this_count].to_i.abs}枚#{result[:this_count].to_i<0 ? '減って':'増えて'}#{result[:result_count]}枚になりました！"
     when RESULT_TOO_MANY
-      return "@#{from_id} #{from_id}さんが#{result[:this_count].to_i.abs}枚増やそうとしましたが、さかださんが座布団を落としたので、#{result[:user_id]}さんの座布団は#{result[:fixed_count].to_i.abs}枚だけ増えて#{result[:result_count]}枚になりました！"
+      return "@#{from_id} #{result[:this_count].to_i.abs}枚増やそうとしましたが、さかださんが座布団を落としたので、#{result[:user_id]}さんの座布団は#{result[:fixed_count].to_i.abs}枚だけ増えて#{result[:result_count]}枚になりました！"
     when RESULT_TOO_LITTLE
-      return "@#{from_id} #{from_id}さんが#{result[:this_count].to_i.abs}枚減らそうとしましたが、さかださんが運びきれず、#{result[:user_id]}さんの座布団は#{result[:fixed_count].to_i.abs}枚だけ減って#{result[:result_count]}枚になりました！"
+      return "@#{from_id} #{result[:this_count].to_i.abs}枚減らそうとしましたが、さかださんが運びきれず、#{result[:user_id]}さんの座布団は#{result[:fixed_count].to_i.abs}枚だけ減って#{result[:result_count]}枚になりました！"
     when RESULT_ZERO
       return "@#{from_id} #{from_id}さん！#{result[:user_id]}さんの座布団はもうゼロよ！"
     end
