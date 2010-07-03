@@ -12,11 +12,14 @@ class Sakada
   # return:返信status
   #
   def carry_zabuton_by_tweet(status, from_id)
-    request = get_request(status)
-    return [] unless valid_request?(request)
-
-    result = process_request(request, from_id)
-    return [build_reply_status(result, from_id)]
+    requests = get_request(status)
+    statuslist = Array.new 
+    requests.each do |request|
+      next unless valid_request?(request)
+      result = process_request(request, from_id)
+      statuslist.push build_reply_status(result, from_id)
+    end
+    return statuslist
   end
 
   private
@@ -25,11 +28,11 @@ class Sakada
   end
 
   def valid_request?(request)
-    request.size != 0 && request[0].size == 2
+    request.size == 2
   end
 
   def process_request(request, from_id)
-   userid, count = request[0][0], get_zabuton_count(request[0][1])
+   userid, count = request[0], get_zabuton_count(request[1])
    if can_save_zabuton?(from_id, userid, count)
      if !have_zabuton?(userid) && count < 0
        return { :user_id => userid, :this_count => count, :result_count => 0, :res => RESULT_ZERO }
