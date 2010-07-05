@@ -10,5 +10,5 @@ loop do
   if ts.read_all([:adjust, username]).size == 0
     ts.write([:adjust, username])
   end
-  sleep 180
+  sleep 300
 end
