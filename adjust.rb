@@ -35,11 +35,19 @@ while ts.take([:adjust, username])
     if followers_response.code != "200"
       next
     end
+    outgoing_response = access_token.get("http://api.twitter.com/1/friendships/outgoing.json")
+    if outgoing_response.code != "200"
+      next
+    end
     friends = JSON.load(friends_response.body)
     followers = JSON.load(followers_response.body)
+    outgoing = JSON.load(outgoing_response.body)
     ids_to_follow = followers - (friends & followers)
     ids_to_unfollow = friends - (friends & followers)
     ids_to_follow.each do |id_to_follow|
+      if outgoing["ids"].include?(id_to_follow)
+        next
+      end
       param = {:user_id => id_to_follow}
       response = access_token.post("http://api.twitter.com/1/friendships/create/#{username}.json", param)
       if response.code == "200"
