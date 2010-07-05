@@ -28,5 +28,10 @@ while tuple = ts.take([:update, username, nil, nil])
   if in_reply_to_status_id
     param[:in_reply_to_status_id] = in_reply_to_status_id
   end
-  access_token.post("http://api.twitter.com/1/statuses/update.json", param)
+  3.times do
+    response = access_token.post("http://api.twitter.com/1/statuses/update.json", param)
+    if response.code == "200"
+      break
+    end
+  end
 end
