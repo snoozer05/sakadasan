@@ -6,6 +6,7 @@ require "rubygems"
 require "pit"
 require "oauth"
 require "json"
+require "logger"
 
 username = Updater::Username
 ts = DRbObject.new_with_uri(Updater::DRbURI)
