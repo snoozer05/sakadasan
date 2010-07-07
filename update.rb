@@ -21,6 +21,9 @@ access_token = OAuth::AccessToken.new(
   user_config[:access_token],
   user_config[:access_token_secret])
 
+logger = Logger.new("#{ENV["HOME"]}/log/#{username}.log")
+logger.level = Logger::INFO
+
 while tuple = ts.take([:update, username, nil, nil])
   status = tuple[2]
   in_reply_to_status_id = tuple[3]
@@ -28,10 +31,14 @@ while tuple = ts.take([:update, username, nil, nil])
   if in_reply_to_status_id
     param[:in_reply_to_status_id] = in_reply_to_status_id
   end
+  response = nil
   3.times do
     response = access_token.post("http://api.twitter.com/1/statuses/update.json", param)
     if response.code == "200"
       break
     end
+  end
+  if response.code != "200"
+    logger.warn("@#{username} has failed to update: \"#{status}\"")
   end
 end
