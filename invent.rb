@@ -6,6 +6,7 @@ require "rubygems"
 require "pit"
 require "oauth"
 require "json"
+require "logger"
 
 username = Updater::Username
 ts = DRbObject.new_with_uri(Updater::DRbURI)
@@ -21,18 +22,26 @@ access_token = OAuth::AccessToken.new(
   user_config[:access_token],
   user_config[:access_token_secret])
 
+logger = Logger.new("#{ENV["HOME"]}/log/#{username}.log")
+logger.level = Logger::INFO
+
 while ts.take([:invent, username])
   begin
     response = access_token.get("http://api.twitter.com/1/statuses/friends_timeline.json?count=200")
-  rescue Exception
-    next
-  end
-  if response.code == "200"
-    tweets = JSON.load(response.body)
-    tweets.reverse_each do |tweet|
-      ts.write([:record, username, tweet])
+    if response.code == "200"
+      tweets = JSON.load(response.body)
+      tweets.reverse_each do |tweet|
+        ts.write([:record, username, tweet])
+      end
+    else
+      logger.warn("[#{Time.new.to_s}] invent.rb for @#{username}: response code #{response.code}")
+      next
     end
-  else
+  rescue => e
+    logger.fatal("#{e.class}: #{e.message}")
+    e.backtrace.each do |info|
+      logger.fatal("-- #{info}")
+    end
     next
   end
 end
